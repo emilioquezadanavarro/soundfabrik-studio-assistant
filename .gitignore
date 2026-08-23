@@ -216,3 +216,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Studio Documents
+studio-docs/
+studio-assets
+
+# Others
+.idea/
