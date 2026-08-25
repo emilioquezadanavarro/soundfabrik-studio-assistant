@@ -1,0 +1,10 @@
+[theme]
+# Palette from soundfabrikberlin.com
+base = "light"
+primaryColor = "#c46e36"
+backgroundColor = "#eddcd3"
+secondaryBackgroundColor = "#f6ece6"
+textColor = "#260d00"
+
+[browser]
+gatherUsageStats = false
