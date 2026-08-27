@@ -4,7 +4,10 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 ROOT_DIR = Path(__file__).resolve().parents[1]
+load_dotenv(ROOT_DIR / ".env")
 
 FILES_DIR = ROOT_DIR / "studio-docs"
 ASSETS_DIR = ROOT_DIR / "studio-assets"

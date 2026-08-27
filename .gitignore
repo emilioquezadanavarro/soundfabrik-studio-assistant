@@ -221,5 +221,8 @@ __marimo__/
 studio-docs/
 studio-assets
 
+# App data (vector DB, leads)
+data/
+
 # Others
 .idea/
