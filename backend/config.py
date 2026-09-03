@@ -20,7 +20,7 @@ LOGO_MARK = ASSETS_DIR / "soundfabrik-mark-dark.png"
 COLLECTION_NAME = "soundfabrik_knowledge"
 CHUNK_SIZE = 800
 CHUNK_OVERLAP = 150
-RETRIEVE_K = 8
+RETRIEVE_K = 5
 
 EMBEDDING_MODEL = "text-embedding-3-small"
 CHAT_MODEL = os.getenv("ANTHROPIC_CHAT_MODEL", "claude-haiku-4-5")
