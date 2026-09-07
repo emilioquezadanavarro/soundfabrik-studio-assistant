@@ -217,9 +217,9 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-# Studio Documents
+# Real studio content, kept private; repo ships sample-docs/ instead
 studio-docs/
-studio-assets
+studio-assets/
 
 # App data (vector DB, real leads) — ignore contents, keep the schema example
 data/*
