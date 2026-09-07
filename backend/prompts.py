@@ -2,7 +2,7 @@
 
 GREETING = (
     "Welcome to Soundfabrik Berlin, the prime recording studio in the heart "
-    "of the capital! I'm **Franz** — your studio assistant. I can help with "
+    "of the capital! I'm **Franz**, your studio assistant. I can help with "
     "studio specs, booking inquiries, or technical details… and unlike a "
     "temperamental tube preamp, I won't take twenty minutes to warm up. "
     "What kind of project are you working on today? Just ask me :) "
