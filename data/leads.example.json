@@ -1,0 +1,18 @@
+[
+  {
+    "type": "general_inquiry",
+    "email": "alex.rivera@example.com",
+    "phone": null,
+    "message": "Hi, I'm Alex Rivera. We're a 4-piece band looking to track drums and bass live over 3 days in early March. Best reached at alex.rivera@example.com.",
+    "captured_at": "2026-01-15T09:32:00+00:00",
+    "source": "soundfabrik_public_chatbot"
+  },
+  {
+    "type": "general_inquiry",
+    "email": null,
+    "phone": "+49 30 12345678",
+    "message": "Interested in a Dolby Atmos mix for an existing album. Call me on +49 30 12345678.",
+    "captured_at": "2026-01-18T14:05:00+00:00",
+    "source": "soundfabrik_public_chatbot"
+  }
+]

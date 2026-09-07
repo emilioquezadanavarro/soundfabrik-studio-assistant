@@ -221,8 +221,9 @@ __marimo__/
 studio-docs/
 studio-assets
 
-# App data (vector DB, leads)
-data/
+# App data (vector DB, real leads) — ignore contents, keep the schema example
+data/*
+!data/leads.example.json
 
 # Others
 .idea/
