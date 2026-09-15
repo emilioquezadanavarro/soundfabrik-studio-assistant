@@ -5,6 +5,7 @@ import re
 
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+from langsmith import traceable
 
 from backend.config import CHAT_MODEL, anthropic_api_key
 from backend.prompts import system_prompt
@@ -52,6 +53,7 @@ def message_text(content) -> str:
     return str(content)
 
 
+@traceable(name="generate_reply", run_type="chain")
 def generate_reply(
     user_message: str,
     history: list[dict],

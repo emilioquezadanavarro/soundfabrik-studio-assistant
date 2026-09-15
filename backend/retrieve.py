@@ -5,6 +5,7 @@ import re
 
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
+from langsmith import traceable
 
 from backend.config import RETRIEVE_K
 
@@ -28,9 +29,8 @@ TEAM_QUERY = re.compile(
 )
 
 
-def retrieve_chunks(
-        vectorestore: Chroma, query: str, k:int = RETRIEVE_K
-) -> list[Document]:
+@traceable(name="retrieve_chunks", run_type="retriever")
+def retrieve_chunks(vectorestore: Chroma, query: str, k:int = RETRIEVE_K) -> list[Document]:
     """Find the chunks in the vector store most relevant to a user query.
 
     Runs a plain similarity search against the query. If the query looks

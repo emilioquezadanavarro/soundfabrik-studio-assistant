@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from langsmith import traceable
+
 from backend.config import STUDIO_NAME
 from backend.generate import generate_reply
 from backend.guard import is_on_topic, looks_like_booking
@@ -32,6 +34,7 @@ THANKS_REPLY = (
 )
 
 
+@traceable(name="handle_turn", run_type="chain")
 def handle_turn(user_text: str, history: list[dict], state: SessionState | None = None) -> TurnResult:
     """Answer one user message. `history` is prior turns only (not this message)."""
     state = state or SessionState()

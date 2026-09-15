@@ -9,10 +9,18 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # repo root on path
+
+# Evals make real LLM calls and would otherwise trace into whatever
+# LANGSMITH_PROJECT the local .env sets for interactive use. Force a
+# separate project so eval runs never mix into the dev/prod trace buckets.
+# Must happen before backend.config's load_dotenv() runs (it never
+# overrides an already-set env var).
+os.environ["LANGSMITH_PROJECT"] = "studio-assistant-tracing-evals"
 
 from evals import guard_set, quality_set, retrieval_set  # noqa: E402
 from evals.runner import print_summary, render_report, write_report  # noqa: E402

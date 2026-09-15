@@ -1,10 +1,9 @@
 """Answer-quality eval: golden questions + LLM-as-judge.
 
 Judges two things per reply: grounded-in-context (no invented facts, and no
-invented *absence* of a fact either) and stayed-in-scope. Case 9 is the
-retrieval-coverage regression test for the "who owns it" gap (see C7 in
-Improvement Plan.md): sample-docs/team.md lists two owners, so a grounded
-answer must name both.
+invented *absence* of a fact either) and stayed-in-scope. Case 9 is a
+retrieval-coverage regression test for the "who owns it" gap:
+sample-docs/team.md lists two owners, so a grounded answer must name both.
 """
 
 from __future__ import annotations
@@ -13,6 +12,7 @@ from dataclasses import dataclass
 
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, SystemMessage
+from langsmith import traceable
 
 from backend.config import GUARD_MODEL, anthropic_api_key
 from backend.generate import generate_reply, message_text
@@ -67,6 +67,7 @@ def _judge() -> ChatAnthropic:
     )
 
 
+@traceable(name="judge_reply", run_type="chain")
 def _judge_reply(question: str, context: str, reply: str) -> tuple[bool, bool]:
     messages = [
         SystemMessage(content=JUDGE_PROMPT),

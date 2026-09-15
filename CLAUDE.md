@@ -6,8 +6,7 @@ Guidance for working in this repo — human or AI.
 
 A RAG studio-assistant chatbot ("Franz") for Soundfabrik Berlin: guard →
 retrieve → generate, plus lead capture. Streamlit frontend, LangChain +
-Chroma + Claude/OpenAI backend. See `Improvement Plan.md` for the roadmap
-and current status; it is gitignored, so ask if you need its contents.
+Chroma + Claude/OpenAI backend.
 
 ## Architecture boundaries
 
@@ -38,6 +37,29 @@ and current status; it is gitignored, so ask if you need its contents.
 - **Prompts live in `backend/prompts.py`**, not inline in `generate.py` or
   `guard.py`. `system_prompt(lead_captured)` swaps in a different lead-capture
   section depending on session state rather than branching in the caller.
+- **Tracing is LangSmith, env-var driven.** `ChatAnthropic.invoke()` calls
+  trace themselves automatically once `LANGSMITH_TRACING`/`LANGSMITH_API_KEY`
+  are set, and nest under whatever `@traceable` span is currently active via
+  context propagation — not by explicit parent wiring. Two different reasons
+  functions carry `@traceable`:
+  - **Visibility**: `retrieve_chunks()` calls a plain `similarity_search()`,
+    not a `Runnable`, so it has zero auto-tracing and needs the decorator
+    just to appear at all.
+  - **Naming/legibility**: `handle_turn()` (root span per turn),
+    `is_on_topic()` (as `guard_is_on_topic`) and `generate_reply()` already
+    auto-trace their inner `ChatAnthropic` calls either way (context
+    propagation), but without a name on the wrapping function, two
+    `ChatAnthropic` nodes in one turn (guard's classifier + the real reply)
+    are indistinguishable in the tree. Naming the step, not the raw LLM
+    call, also captures the surrounding logic (guard's regex fast path,
+    generate's prompt assembly + `strip_dashes` post-processing) as part of
+    that span.
+  Same pattern in `evals/quality_set.py`: `_judge_reply` is named so the
+  judge's LLM call doesn't look identical to the answer's `generate_reply`
+  call in the same eval case.
+  Three `LANGSMITH_PROJECT` buckets: `studio-assistant-tracing-dev` (local),
+  `studio-assistant-tracing-evals` (`evals/run.py` forces this, overriding
+  `.env`), `studio-assistant-tracing-prod` (Block F deploy).
 
 ## Conventions
 
@@ -68,7 +90,10 @@ and current status; it is gitignored, so ask if you need its contents.
 - `tests/` covers pure-logic functions only (no network, no API keys):
   `extract_lead`, the guard regexes, `retrieve_chunks` dedup/expansion
   (against a stub vectorstore), `format_context`/`source_names`,
-  `strip_dashes`.
+  `strip_dashes`. `tests/conftest.py` force-disables LangSmith tracing
+  before any test imports `backend.*` — without it, `@traceable` on
+  `retrieve_chunks` would make even offline tests attempt a real network
+  call. Keep that guard if you add more `@traceable` functions.
 - `evals/` covers everything that calls Claude, OpenAI, or web search:
   retrieval recall@k/MRR, guard precision/recall, and answer-quality
   (LLM-as-judge for grounded-in-context + stayed-in-scope). Runs against

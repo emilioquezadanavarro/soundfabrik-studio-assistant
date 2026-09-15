@@ -15,8 +15,7 @@ Three labeled suites that measure quality with real API calls, separate from
 - **Answer quality** (`quality_set.py`) — 12 golden questions run through the
   real generation pipeline, judged by a second Claude call for whether the
   reply is grounded in the retrieved context and stayed in scope. Includes a
-  permanent regression case for the "who owns it" retrieval-coverage gap
-  (see Improvement Plan.md, item C7).
+  permanent regression case for the "who owns it" retrieval-coverage gap.
 
 All three run against `sample-docs/`/`sample-assets/` (the tracked fictional
 studio), not the private real content, so results are reproducible in CI and
