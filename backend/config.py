@@ -9,13 +9,22 @@ from dotenv import load_dotenv
 ROOT_DIR = Path(__file__).resolve().parents[1]
 load_dotenv(ROOT_DIR / ".env")
 
-FILES_DIR = ROOT_DIR / "studio-docs"
-ASSETS_DIR = ROOT_DIR / "studio-assets"
+# Default to the tracked sample-docs/ set so `clone && run` works with zero
+# secrets beyond API keys. Point DOCS_DIR/ASSETS_DIR at the real (gitignored)
+# studio-docs/studio-assets for the live deploy.
+FILES_DIR = ROOT_DIR / os.getenv("DOCS_DIR", "sample-docs")
+ASSETS_DIR = ROOT_DIR / os.getenv("ASSETS_DIR", "sample-assets")
 DATA_DIR = ROOT_DIR / "data"
 CHROMA_DIR = DATA_DIR / "chroma"
 LEADS_FILE = DATA_DIR / "leads.json"
 INGEST_HASH_FILE = CHROMA_DIR / ".ingest_hash"
-LOGO_MARK = ASSETS_DIR / "soundfabrik-mark-dark.png"
+
+
+def _first_logo() -> Path:
+    return next(iter(sorted(ASSETS_DIR.glob("*.png"))), ASSETS_DIR / "logo.png")
+
+
+LOGO_MARK = _first_logo()
 
 COLLECTION_NAME = "soundfabrik_knowledge"
 CHUNK_SIZE = 800
