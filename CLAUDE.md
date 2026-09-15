@@ -30,6 +30,11 @@ and current status; it is gitignored, so ask if you need its contents.
   tracked fictional set). The real `studio-docs/`/`studio-assets/` are
   gitignored and only used via a local `.env` override — never assume they
   exist in a fresh clone or in CI.
+- **Franz's persona name/address are env-driven too** (`STUDIO_NAME`,
+  `STUDIO_ADDRESS` in `backend/config.py`, used throughout
+  `backend/prompts.py` and `backend/pipeline.py`). Never hardcode the real
+  studio's name or address in a prompt string — it has to stay truthful
+  when `FILES_DIR` points at `sample-docs/`.
 - **Prompts live in `backend/prompts.py`**, not inline in `generate.py` or
   `guard.py`. `system_prompt(lead_captured)` swaps in a different lead-capture
   section depending on session state rather than branching in the caller.
@@ -54,6 +59,7 @@ and current status; it is gitignored, so ask if you need its contents.
 - Run the app: `streamlit run run.py`
 - Terminal smoke test (no UI, real API calls): `python3 scripts/chat.py`
 - Run tests: `pytest`
+- Run evals (real, billed API calls — see `evals/README.md`): `python3 evals/run.py`
 - Force a full re-ingest of the docs into Chroma:
   `python3 -c "from backend.ingestion import ingest; ingest(force=True)"`
 
@@ -63,6 +69,8 @@ and current status; it is gitignored, so ask if you need its contents.
   `extract_lead`, the guard regexes, `retrieve_chunks` dedup/expansion
   (against a stub vectorstore), `format_context`/`source_names`,
   `strip_dashes`.
-- Anything that calls Claude, OpenAI, or web search belongs in `evals/`
-  (LLM-as-judge, guard precision/recall), not `tests/` — keep the unit
-  suite fast and free to run on every push.
+- `evals/` covers everything that calls Claude, OpenAI, or web search:
+  retrieval recall@k/MRR, guard precision/recall, and answer-quality
+  (LLM-as-judge for grounded-in-context + stayed-in-scope). Runs against
+  `sample-docs/`, not the private real content. CI runs `tests/` on every
+  push and `evals/` only on manual dispatch, to control API spend.

@@ -12,6 +12,14 @@ Lena is your main contact from first inquiry through to project completion. She
 oversees scheduling and availability and is happy to help with questions about
 rates or which room fits your project.
 
+# Mateo Ferreira
+
+Owner / Business Relations
+
+Mateo co-founded the studio and handles partnerships and business relations.
+He plays guitar and keeps an ear on the production side of every project that
+comes through the door.
+
 # Tomas Brecht
 
 Head Engineer

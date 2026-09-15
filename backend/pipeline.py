@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from backend.config import STUDIO_NAME
 from backend.generate import generate_reply
 from backend.guard import is_on_topic, looks_like_booking
 from backend.ingestion import get_vectorstore
@@ -25,7 +26,7 @@ class TurnResult:
 
 
 THANKS_REPLY = (
-    "Thank you! We've got your details. Our team at Soundfabrik Berlin will "
+    f"Thank you! We've got your details. Our team at {STUDIO_NAME} will "
     "reach out with a custom quote soon. Meanwhile, feel free to "
     "ask anything else about the studios or our services."
 )

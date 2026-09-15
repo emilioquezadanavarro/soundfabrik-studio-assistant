@@ -26,6 +26,12 @@ def _first_logo() -> Path:
 
 LOGO_MARK = _first_logo()
 
+# Franz's persona text (backend/prompts.py) is built from these rather than
+# hardcoding the real studio's name/address, so it stays truthful when
+# FILES_DIR points at sample-docs/ instead of the real studio-docs/.
+STUDIO_NAME = os.getenv("STUDIO_NAME", "Klangraum Berlin")
+STUDIO_ADDRESS = os.getenv("STUDIO_ADDRESS", "Weserstraße 12, 12047 Berlin")
+
 COLLECTION_NAME = "soundfabrik_knowledge"
 CHUNK_SIZE = 800
 CHUNK_OVERLAP = 150

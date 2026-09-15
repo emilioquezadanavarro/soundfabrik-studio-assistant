@@ -18,6 +18,15 @@ GEAR_QUERY = re.compile(
       re.IGNORECASE,
 )
 
+# Team/ownership questions have the same problem as gear questions: the team
+# page splits into one chunk per person, so a plain top-k search over the
+# whole corpus can surface only one team member's chunk and silently drop
+# the rest (e.g. "who is the owner" naming only one of two owners).
+TEAM_QUERY = re.compile(
+    r"\b(owner|owners|founder|founders|team|staff|who\s+runs|who\s+owns)\b",
+    re.IGNORECASE,
+)
+
 
 def retrieve_chunks(
         vectorestore: Chroma, query: str, k:int = RETRIEVE_K
@@ -25,9 +34,9 @@ def retrieve_chunks(
     """Find the chunks in the vector store most relevant to a user query.
 
     Runs a plain similarity search against the query. If the query looks
-    like it is about gear or equipment (matches GEAR_QUERY), a second
-    search is run with the query expanded to mention equipment lists and
-    both studios, so we do not miss gear that lives on a page the original
+    like it is about gear/equipment (GEAR_QUERY) or the team/ownership
+    (TEAM_QUERY), a second search is run with the query broadened, so we
+    do not miss gear or team members that live on a page the original
     wording did not point to directly.
 
     Results from every search are merged and deduplicated (by comparing
@@ -39,6 +48,8 @@ def retrieve_chunks(
         queries.append(
             f"{query} equipment list gear inventory Studio A and Studio B"
         )
+    if TEAM_QUERY.search(query):
+        queries.append(f"{query} team members owners staff roster")
 
     seen: set[str] = set()
     docs: list[Document] = []
