@@ -15,7 +15,7 @@ A RAG studio-assistant chatbot for a real Berlin recording studio: guard, retrie
 - **RAG pipeline design**: a guard → retrieve → generate flow with each stage as its own testable module (`backend/`).
 - **Retrieval evaluation**: recall@5 and MRR measured against a labeled case set, not eyeballed (`evals/retrieval_set.py`).
 - **LLM-as-judge evals**: an automated grounded/in-scope judge for answer quality, with a real eval-driven bug fix trail (`evals/quality_set.py`, see Design decisions below).
-- **Prompt engineering**: iterative fixes to real failure modes found by the eval suite, cross-room hallucination, scope-leak on refusals, an owner-coverage retrieval gap (`backend/prompts.py`).
+- **Prompt engineering**: iterative fixes to real failure modes found by the eval suite, cross-room hallucination, scope-leak on refusals, an owner-coverage retrieval gap (`backend/prompts.py`, full history in [`docs/prompt-evolution.md`](docs/prompt-evolution.md)).
 - **Guardrails**: a regex-first, LLM-fallback topic guard, plus rate limiting, message-length caps, and history truncation against abuse (`backend/guard.py`, `backend/pipeline.py`).
 - **Observability**: end-to-end LLM tracing with LangSmith, named spans per pipeline stage, separate dev/eval/prod projects (`@traceable` throughout `backend/`).
 - **Vector search**: Chroma similarity search with regex-based query expansion to catch gear/team questions a narrow phrasing would miss (`backend/retrieve.py`).
@@ -77,6 +77,8 @@ soundfabrik-studio-assistant/
 │   ├── app.py
 │   ├── ui.py                    # brand CSS, hero, footer
 │   └── secrets_bridge.py        # st.secrets -> os.environ, runs before backend.config loads
+├── docs/
+│   └── prompt-evolution.md      # how backend/prompts.py got to its current shape, with commit hashes
 ├── evals/                       # retrieval / guard / quality suites, real billed API calls
 │   ├── __init__.py
 │   ├── README.md                # how to run each suite, how to read the report
@@ -137,7 +139,7 @@ This project was built using Spec Driven Development (SDD) alongside Claude Code
 
 Directing a capable LLM is a distinct engineering skill, separate from traditional programming. It requires treating model output as a proposal to check, not an answer to accept. For any non-trivial change, the workflow followed a strict sequence: define the plan in plain language, review the proposed architecture, and confirm the execution steps before generation occurred.
 
-Block E (moving lead storage to Supabase) exemplifies this: schema first, package second, environment variables third, each checked independently before implementation. A model accelerates code production, but it does not replace system comprehension. Below are a few concrete examples where human intervention overruled AI proposals to prioritize cost, UX, and accuracy:
+Moving lead storage to Supabase exemplifies this: schema first, package second, environment variables third, each checked independently before implementation. A model accelerates code production, but it does not replace system comprehension. Below are a few concrete examples where human intervention overruled AI proposals to prioritize cost, UX, and accuracy:
 
 - **Keeping the regex fast path.** `backend/guard.py` checks a message against a keyword list before ever considering an LLM call, and only falls back to the Claude classifier when that check is ambiguous. It would be easy to call that redundant now that the classifier exists and simplify it away. It stays, deliberately: it's a cost control, not a leftover, since most in-topic messages ("do you have a Neumann U87?") are obviously on-topic by keyword alone and don't need an API call to confirm it. That reasoning is written directly into `CLAUDE.md` so it survives the next person (or the next AI session) who looks at that code and is tempted to "clean it up."
 - **Reverting the sources-in-UI feature after seeing it render.** Retrieved source filenames (`studio-a.md`, `faq.md`) were already computed on the backend and just never surfaced. Adding a caption under each reply took two lines, and it worked, verified with an actual browser screenshot. Shown a real screenshot, the call was that raw filenames read as internal/debug output in a customer-facing chat, not something a visitor should see. The change was fully reverted in the same session, and the backend still computes the data for tracing and future use, it's just not rendered.
