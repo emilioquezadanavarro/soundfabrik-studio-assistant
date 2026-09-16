@@ -51,24 +51,28 @@ def test_extract_lead_phone_too_long_is_ignored():
     assert extract_lead("My number is 1234567890123456, call me") is None
 
 
-@patch("backend.leads.supabase")
-def test_save_lead_inserts_into_supabase(mock_supabase):
+@patch("backend.leads._get_client")
+def test_save_lead_inserts_into_supabase(mock_get_client):
+    mock_client = MagicMock()
+    mock_get_client.return_value = mock_client
     lead = {"email": "jane@example.com", "phone": None, "message": "Hi, quote please"}
 
     record = save_lead(lead)
 
-    mock_supabase.table.assert_called_once_with("leads")
-    mock_supabase.table.return_value.insert.assert_called_once_with(record)
-    mock_supabase.table.return_value.insert.return_value.execute.assert_called_once()
+    mock_client.table.assert_called_once_with("leads")
+    mock_client.table.return_value.insert.assert_called_once_with(record)
+    mock_client.table.return_value.insert.return_value.execute.assert_called_once()
     assert record["email"] == "jane@example.com"
     assert record["phone"] is None
     assert record["type"] == "general_inquiry"
     assert record["source"] == "recording_studio_public_chatbot"
 
 
-@patch("backend.leads.supabase")
-def test_save_lead_returns_record_even_if_supabase_fails(mock_supabase):
-    mock_supabase.table.return_value.insert.return_value.execute.side_effect = Exception("network error")
+@patch("backend.leads._get_client")
+def test_save_lead_returns_record_even_if_supabase_fails(mock_get_client):
+    mock_client = MagicMock()
+    mock_client.table.return_value.insert.return_value.execute.side_effect = Exception("network error")
+    mock_get_client.return_value = mock_client
     lead = {"email": "jane@example.com", "phone": None, "message": "Hi, quote please"}
 
     record = save_lead(lead)

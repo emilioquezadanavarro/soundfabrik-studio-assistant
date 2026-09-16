@@ -14,7 +14,14 @@ from datetime import datetime, timezone
 from backend.config import supabase_url, supabase_service_role_key
 from supabase import create_client, Client
 
-supabase: Client = create_client(supabase_url(), supabase_service_role_key())
+_client: Client | None = None
+
+
+def _get_client() -> Client:
+    global _client
+    if _client is None:
+        _client = create_client(supabase_url(), supabase_service_role_key())
+    return _client
 
 # Finding e-mail information
 EMAIL_RE = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
@@ -65,7 +72,7 @@ def save_lead(lead: dict) -> dict:
     }
 
     try:
-        supabase.table("leads").insert(record).execute()
+        _get_client().table("leads").insert(record).execute()
         print(f"[LEAD SAVED] {json.dumps(record)}")
     except Exception as e:
         print(f"[LEAD SAVE FAILED] {e} - record: {json.dumps(record)}")
