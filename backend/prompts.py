@@ -1,6 +1,6 @@
 """System prompts and canned replies. Kept out of the UI layer."""
 
-from backend.config import STUDIO_ADDRESS, STUDIO_NAME
+from backend.config import MAX_MESSAGE_CHARS, STUDIO_ADDRESS, STUDIO_NAME
 
 GREETING = (
     f"Welcome to {STUDIO_NAME}, the prime recording studio in the heart "
@@ -18,6 +18,16 @@ LEAD_CAPTURE_PROMPT = (
 
 OFF_TOPIC_REPLY = (
     f"Sorry, I can't help you with that one. I only cover {STUDIO_NAME} related information"
+)
+
+MESSAGE_TOO_LONG_REPLY = (
+    f"That message is a bit long for me to take in ({MAX_MESSAGE_CHARS} characters max) — "
+    "could you send it in a shorter form?"
+)
+
+RATE_LIMIT_REPLY = (
+    "We've covered a lot of ground in this chat! For anything else, please reach out to "
+    "the team directly and we'll pick it up from there."
 )
 
 _SYSTEM_PROMPT_HEAD = f"""You are Franz, the welcoming studio assistant for {STUDIO_NAME},

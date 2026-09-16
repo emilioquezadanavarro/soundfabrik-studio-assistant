@@ -41,6 +41,11 @@ EMBEDDING_MODEL = "text-embedding-3-small"
 CHAT_MODEL = os.getenv("ANTHROPIC_CHAT_MODEL", "claude-haiku-4-5")
 GUARD_MODEL = os.getenv("ANTHROPIC_GUARD_MODEL", "claude-haiku-4-5")
 
+# Abuse guards for the public live demo (Block F).
+MAX_MESSAGE_CHARS = 1000
+MAX_TURNS_PER_SESSION = 20
+HISTORY_TURN_LIMIT = 10
+
 
 def openai_api_key() -> str:
     key = (os.getenv("OPENAI_API_KEY") or "").strip()

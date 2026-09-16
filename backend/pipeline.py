@@ -6,18 +6,29 @@ from dataclasses import dataclass, field
 
 from langsmith import traceable
 
-from backend.config import STUDIO_NAME
+from backend.config import (
+    HISTORY_TURN_LIMIT,
+    MAX_MESSAGE_CHARS,
+    MAX_TURNS_PER_SESSION,
+    STUDIO_NAME,
+)
 from backend.generate import generate_reply
 from backend.guard import is_on_topic, looks_like_booking
 from backend.ingestion import get_vectorstore
 from backend.leads import extract_lead, save_lead
-from backend.prompts import LEAD_CAPTURE_PROMPT, OFF_TOPIC_REPLY
+from backend.prompts import (
+    LEAD_CAPTURE_PROMPT,
+    MESSAGE_TOO_LONG_REPLY,
+    OFF_TOPIC_REPLY,
+    RATE_LIMIT_REPLY,
+)
 from backend.retrieve import format_context, retrieve_chunks, source_names
 
 @dataclass
 class SessionState:
     awaiting_lead: bool = False
     lead_captured: bool = False
+    turn_count: int = 0
 
 @dataclass
 class TurnResult:
@@ -38,6 +49,17 @@ THANKS_REPLY = (
 def handle_turn(user_text: str, history: list[dict], state: SessionState | None = None) -> TurnResult:
     """Answer one user message. `history` is prior turns only (not this message)."""
     state = state or SessionState()
+
+    # Abuse guards, checked before anything else touches the LLM or Chroma.
+    state.turn_count += 1
+    if state.turn_count > MAX_TURNS_PER_SESSION:
+        return TurnResult(reply=RATE_LIMIT_REPLY, state=state)
+    if len(user_text) > MAX_MESSAGE_CHARS:
+        return TurnResult(reply=MESSAGE_TOO_LONG_REPLY, state=state)
+
+    # Cap how much prior context gets sent to the LLM, regardless of how long
+    # the session has run — 2 messages (user + assistant) per turn.
+    history = history[-(2 * HISTORY_TURN_LIMIT):]
 
     # Capture contact info whenever the visitor provides it, not only when we
     # explicitly asked. Franz may ask for it on his own, or the visitor may
