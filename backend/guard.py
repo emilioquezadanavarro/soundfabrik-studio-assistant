@@ -6,6 +6,7 @@ import re
 
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, SystemMessage
+from langsmith import traceable
 
 from backend.config import GUARD_MODEL, anthropic_api_key
 from backend.generate import message_text
@@ -49,6 +50,7 @@ def _guard_llm() -> ChatAnthropic:
         api_key=anthropic_api_key(),
     )
 
+@traceable(name="guard_is_on_topic", run_type="chain")
 def is_on_topic(user_message: str, history: list[dict]) -> bool:
     if STUDIO_TERMS.search(user_message):
         return True

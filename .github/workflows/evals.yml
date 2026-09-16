@@ -1,0 +1,35 @@
+name: Evals
+
+# Manual only, or on a PR explicitly labeled "run-evals" — these make real
+# OpenAI/Anthropic API calls (embeddings + a cheap Claude model), so they
+# don't run on every push like the free unit-test suite does.
+on:
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: "Which suite(s) to run"
+        required: false
+        default: "all"
+        type: choice
+        options: [all, retrieval, guard, quality]
+  pull_request:
+    types: [labeled]
+
+jobs:
+  evals:
+    if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'run-evals'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python3 evals/run.py --suite ${{ github.event.inputs.suite || 'all' }}
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: eval-results
+          path: evals/results/latest.md

@@ -7,8 +7,6 @@ Deploy-ready for Streamlit Community Cloud. API keys via st.secrets or .env.
 
 from __future__ import annotations
 
-import os
-
 import streamlit as st
 
 from backend.config import LOGO_MARK
@@ -16,19 +14,8 @@ from backend.ingestion import get_vectorstore
 from backend.pipeline import SessionState, handle_turn
 from backend.prompts import GREETING, LEAD_CAPTURE_PROMPT
 
+from frontend.secrets_bridge import bridge_secrets_to_env
 from frontend.ui import apply_brand_styles, render_footer, render_hero
-
-
-def _bridge_secrets_to_env() -> None:
-    """Copy Streamlit secrets into os.environ so the (Streamlit-free) backend
-    can read them via plain env vars, both locally and on Streamlit Cloud."""
-    for key in ("OPENAI_API_KEY", "ANTHROPIC_API_KEY"):
-        try:
-            value = st.secrets[key]
-        except Exception:
-            continue
-        if value:
-            os.environ.setdefault(key, str(value))
 
 
 @st.cache_resource(show_spinner="Loading studio knowledge…")
@@ -83,7 +70,7 @@ def main() -> None:
         layout="centered",
         initial_sidebar_state="collapsed",
     )
-    _bridge_secrets_to_env()
+    bridge_secrets_to_env()
     apply_brand_styles()
     render_hero()
 

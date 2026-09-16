@@ -1,5 +1,5 @@
 """
-Capture booking leads to data/leads.json.
+Capture booking leads to Supabase.
 
 Deliberately minimal: If a message contains an email or a phone number, it
 stores the whole message verbatim alongside whatever contact fields it founds and a generic inquiry type
@@ -11,7 +11,17 @@ from __future__ import annotations
 import json
 import re
 from datetime import datetime, timezone
-from backend.config import DATA_DIR, LEADS_FILE
+from backend.config import supabase_url, supabase_service_role_key
+from supabase import create_client, Client
+
+_client: Client | None = None
+
+
+def _get_client() -> Client:
+    global _client
+    if _client is None:
+        _client = create_client(supabase_url(), supabase_service_role_key())
+    return _client
 
 # Finding e-mail information
 EMAIL_RE = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
@@ -58,19 +68,13 @@ def save_lead(lead: dict) -> dict:
         "phone": lead.get("phone"),
         "message": lead.get("message", ""),
         "captured_at": datetime.now(timezone.utc).isoformat(),
-        "source": "soundfabrik_public_chatbot",
+        "source": "recording_studio_public_chatbot",
     }
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
-    leads: list[dict] = []
-    if LEADS_FILE.exists():
-        try:
-            loaded = json.loads(LEADS_FILE.read_text(encoding="utf-8"))
-            if isinstance(loaded, list):
-                leads = loaded
-        except json.JSONDecodeError:
-            leads = []
 
-    leads.append(record)
-    LEADS_FILE.write_text(json.dumps(leads, indent=2), encoding="utf-8")
-    print(f"[LEAD SAVED] {json.dumps(record)}")
+    try:
+        _get_client().table("leads").insert(record).execute()
+        print(f"[LEAD SAVED] {json.dumps(record)}")
+    except Exception as e:
+        print(f"[LEAD SAVE FAILED] {e} - record: {json.dumps(record)}")
+
     return record
