@@ -29,6 +29,7 @@ class SessionState:
     awaiting_lead: bool = False
     lead_captured: bool = False
     turn_count: int = 0
+    nudge_count: int = 0
 
 @dataclass
 class TurnResult:
@@ -101,17 +102,21 @@ def handle_turn(user_text: str, history: list[dict], state: SessionState | None 
             )
 
     # We asked for contact info last turn but this message didn't include any:
-    # answer the question anyway and gently remind them.
+    # answer the question anyway and gently remind them, but only every other
+    # turn, so Franz doesn't repeat the ask after every single follow-up
+    # question while the visitor is still awaiting a lead.
     if state.awaiting_lead and not state.lead_captured:
+        state.nudge_count += 1
         store = get_vectorstore()
         chunks = retrieve_chunks(store, user_text)
         context = format_context(chunks)
-        nudge = (
-                generate_reply(user_text, history, context)
-                + "\n\nWhenever you're ready, just share your **email or phone number** "
-                  "and we'll prepare that custom quote."
-        )
-        return TurnResult(reply=nudge, sources=source_names(chunks), state=state)
+        reply = generate_reply(user_text, history, context)
+        if state.nudge_count % 2 == 1:
+            reply += (
+                "\n\nWhenever you're ready, just share your **email or phone number** "
+                "and we'll prepare that custom quote."
+            )
+        return TurnResult(reply=reply, sources=source_names(chunks), state=state)
 
     if not is_on_topic(user_text, history):
         return TurnResult(reply=OFF_TOPIC_REPLY, state=state)
