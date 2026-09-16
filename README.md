@@ -4,11 +4,9 @@
 
 A RAG studio-assistant chatbot for a real Berlin recording studio: guard, retrieve, generate, plus automatic lead capture into Supabase.
 
-<img width="1131" height="900" alt="chat" src="https://github.com/user-attachments/assets/156b09e4-4d9d-4a01-b0c2-a0ad9bb0ab15" />
-
-
 **[Live demo →](https://recording-studio-assistant.streamlit.app/)**
 
+[<img width="1131" height="900" alt="Franz answering a question about the difference between Studio A and Studio B" src="https://github.com/user-attachments/assets/156b09e4-4d9d-4a01-b0c2-a0ad9bb0ab15" />](https://recording-studio-assistant.streamlit.app/)
 
 > **About this project.** An official project built for Soundfabrik Berlin (a Berlin recording studio) for potential future use, and published here for review as part of my portfolio. The public repository and live demo run on synthetic sample data (`sample-docs/`, a fictional studio called "Master Sound Berlin"). The Soundfabrik Berlin name, branding, logo, and real studio documentation remain the property of the studio and are not included in this repository. The code is source-available and **not licensed for reuse**, see [`NOTICE`](./NOTICE).
 
