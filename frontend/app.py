@@ -1,5 +1,5 @@
 """
-Soundfabrik Berlin — General Public Chatbot (Streamlit + LangChain + ChromaDB)
+Studio Assistant — General Public Chatbot (Streamlit + LangChain + ChromaDB)
 
 Deploy-ready for Streamlit Community Cloud. API keys via st.secrets or .env.
 
@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import streamlit as st
 
-from backend.config import LOGO_MARK
+from backend.config import LOGO_MARK, STUDIO_NAME
 from backend.ingestion import get_vectorstore
 from backend.pipeline import SessionState, handle_turn
 from backend.prompts import GREETING, LEAD_CAPTURE_PROMPT
@@ -61,7 +61,7 @@ def respond_to_user(user_text: str) -> None:
 
 def main() -> None:
     st.set_page_config(
-        page_title="Studio Assistant · Soundfabrik",
+        page_title=f"Studio Assistant · {STUDIO_NAME}",
         page_icon=str(LOGO_MARK) if LOGO_MARK.exists() else None,
         layout="centered",
         initial_sidebar_state="collapsed",

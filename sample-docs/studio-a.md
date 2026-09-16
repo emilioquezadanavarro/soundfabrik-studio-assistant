@@ -1,11 +1,11 @@
-# Knowledge Source: https://www.klangraum-berlin.example/studio-north
+# Knowledge Source: https://www.master-sound-berlin.example/studio-a
 
-# Studio North - A space to create
+# Studio A - A space to create
 
 A room made for full-band tracking.
 
 With an area of approximately 70 square meters and ceiling heights of up to 5
-meters, Studio North features a live room with warm, controlled acoustics. It
+meters, Studio A features a live room with warm, controlled acoustics. It
 also houses our Yamaha C7 grand piano, fully serviced in 2023.
 
 One additional isolation booth, measuring 12 square meters, provides separation

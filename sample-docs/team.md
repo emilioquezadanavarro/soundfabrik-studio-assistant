@@ -1,4 +1,4 @@
-# Knowledge Source: https://www.klangraum-berlin.example/team
+# Knowledge Source: https://www.master-sound-berlin.example/team
 
 # The team
 
@@ -26,12 +26,12 @@ Head Engineer
 
 Tomas is a recording and mixing engineer with experience across rock, pop, and
 jazz. He works closely with artists on tracking and post-production and is the
-main engineer for full-band sessions in Studio North.
+main engineer for full-band sessions in Studio A.
 
 # Priya Nair
 
 Producer / Mix Engineer
 
-Priya specializes in production and mixing out of Studio South, including
+Priya specializes in production and mixing out of Studio B, including
 immersive mixes. She also handles songwriting sessions and remote production
 work.

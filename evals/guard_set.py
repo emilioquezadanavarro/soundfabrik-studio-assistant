@@ -22,7 +22,7 @@ class GuardCase:
 
 CASES: list[GuardCase] = [
     # ALLOW: studios, gear, services
-    GuardCase("What's the difference between Studio North and Studio South?", True),
+    GuardCase("What's the difference between Studio A and Studio B?", True),
     GuardCase("Do you have a Neumann U87 I could use?", True),
     GuardCase("Do you offer mastering as a standalone service?", True),
     GuardCase("Can I get Dolby Atmos mixing done there?", True),

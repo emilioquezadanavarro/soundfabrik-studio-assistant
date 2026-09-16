@@ -1,4 +1,4 @@
-# Knowledge Source: https://www.klangraum-berlin.example/services
+# Knowledge Source: https://www.master-sound-berlin.example/services
 
 Recording, Mixing, Events, the works
 
@@ -12,18 +12,18 @@ ensemble.
 
 # 2. Immersive audio
 
-Studio South's 5.1.4 setup gives your mix an extra dimension. We offer mixing
+Studio B's 5.1.4 setup gives your mix an extra dimension. We offer mixing
 in immersive formats on request.
 
 # 3. Mixing
 
-Leave the mixing to one of our engineers, or rent Studio South to mix your own
+Leave the mixing to one of our engineers, or rent Studio B to mix your own
 production. Excellent acoustics and natural light make it a comfortable place
 to work.
 
 # 4. Rehearsals
 
-Preparing for a tour? Studio North's live room is available as a rehearsal
+Preparing for a tour? Studio A's live room is available as a rehearsal
 space — just contact us for details.
 
 # 5. Video & photo

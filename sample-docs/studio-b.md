@@ -1,16 +1,16 @@
-# Knowledge Source: https://www.klangraum-berlin.example/studio-south
+# Knowledge Source: https://www.master-sound-berlin.example/studio-b
 
-# Studio South - Plug & Play
+# Studio B - Plug & Play
 
 Your music. Your space.
 
-Studio South is a plug-and-play production and mixing room. Equipped with a
+Studio B is a plug-and-play production and mixing room. Equipped with a
 DAD interface, ATC SCM45 monitors, and a 5.1.4 immersive setup, the room is an
 ideal writing and mixing space for composers, producers, and artists. You can
 instantly integrate your own laptop and DAW with our gear.
 
-If a higher degree of separation is required, Studio South can be connected to
-the Studio North isolation booth.
+If a higher degree of separation is required, Studio B can be connected to
+the Studio A isolation booth.
 
 # Selected equipment (fictional, for demo purposes only)
 

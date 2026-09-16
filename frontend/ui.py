@@ -8,7 +8,7 @@ from pathlib import Path
 
 import streamlit as st
 
-from backend.config import LOGO_MARK
+from backend.config import LOGO_MARK, STUDIO_ADDRESS, STUDIO_NAME, STUDIO_WEBSITE
 
 
 def _data_uri(path: Path) -> str:
@@ -217,7 +217,7 @@ div[data-testid="stAlert"] p { color: var(--sf-ink) !important; }
 def render_hero() -> None:
     mark_src = _data_uri(LOGO_MARK) if LOGO_MARK.exists() else ""
     mark_html = (
-        f'<img class="sf-mark" src="{mark_src}" alt="Soundfabrik Berlin logo" />'
+        f'<img class="sf-mark" src="{mark_src}" alt="{STUDIO_NAME} logo" />'
         if mark_src
         else ""
     )
@@ -225,7 +225,7 @@ def render_hero() -> None:
         f"""
 <div class="sf-hero">
   {mark_html}
-  <h1>Soundfabrik Berlin</h1>
+  <h1>{STUDIO_NAME}</h1>
   <p>The prime recording studio in the heart of the capital</p>
   <span class="sf-tag">Franz · Studio assistant</span>
 </div>
@@ -235,11 +235,12 @@ def render_hero() -> None:
 
 
 def render_footer() -> None:
+    website_label = STUDIO_WEBSITE.rstrip("/").split("://", 1)[-1]
     st.markdown(
-        """
+        f"""
 <div class="sf-footer">
-  Salzufer 15–16 · 10587 Berlin ·
-  <a href="https://www.soundfabrikberlin.com/" target="_blank" rel="noopener">soundfabrikberlin.com</a>
+  {STUDIO_ADDRESS} ·
+  <a href="{STUDIO_WEBSITE}" target="_blank" rel="noopener">{website_label}</a>
 </div>
         """,
         unsafe_allow_html=True,

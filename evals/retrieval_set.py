@@ -21,10 +21,10 @@ class RetrievalCase:
 
 
 CASES: list[RetrievalCase] = [
-    RetrievalCase("What rooms does Klangraum Berlin have?", ("home.md",)),
+    RetrievalCase("What rooms does Master Sound Berlin have?", ("home.md",)),
     RetrievalCase("Who has recorded at the studio?", ("home.md",)),
     RetrievalCase("Which room should I choose for a full band?", ("faq.md", "studio-a.md")),
-    RetrievalCase("Can I record drums in Studio South?", ("faq.md", "studio-b.md")),
+    RetrievalCase("Can I record drums in Studio B?", ("faq.md", "studio-b.md")),
     RetrievalCase("Can I bring my own laptop and DAW?", ("faq.md", "studio-b.md")),
     RetrievalCase("Do I need to book an engineer or can I work alone?", ("faq.md",)),
     RetrievalCase("How much does a session cost?", ("faq.md",)),
@@ -34,10 +34,10 @@ CASES: list[RetrievalCase] = [
     RetrievalCase("What services do you offer besides recording?", ("services.md",)),
     RetrievalCase("Can I rehearse for a tour at the studio?", ("services.md", "faq.md")),
     RetrievalCase("Can I shoot a music video there?", ("services.md",)),
-    RetrievalCase("What's in Studio North's live room?", ("studio-a.md",)),
+    RetrievalCase("What's in Studio A's live room?", ("studio-a.md",)),
     RetrievalCase("What piano do you have?", ("studio-a.md",)),
-    RetrievalCase("What monitoring does Studio South have?", ("studio-b.md",)),
-    RetrievalCase("What plugins are available in Studio South?", ("studio-b.md",)),
+    RetrievalCase("What monitoring does Studio B have?", ("studio-b.md",)),
+    RetrievalCase("What plugins are available in Studio B?", ("studio-b.md",)),
     RetrievalCase("Who is on the team?", ("team.md",)),
     RetrievalCase("Who is the owner of the studio?", ("team.md",)),
     RetrievalCase("What's your address?", ("contact.md",)),

@@ -43,8 +43,8 @@ class QualityCase:
 
 
 CASES: list[QualityCase] = [
-    QualityCase("What's the difference between Studio North and Studio South?"),
-    QualityCase("Can I record a full band in Studio South?"),
+    QualityCase("What's the difference between Studio A and Studio B?"),
+    QualityCase("Can I record a full band in Studio B?"),
     QualityCase("Can I bring my own DAW?"),
     QualityCase("How much does a session cost?"),
     QualityCase("Who do I contact to book a session?"),
