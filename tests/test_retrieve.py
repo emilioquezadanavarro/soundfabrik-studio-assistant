@@ -54,7 +54,7 @@ def test_retrieve_chunks_skips_expansion_for_non_gear_queries():
 
 
 def test_format_context_empty_list():
-    assert format_context([]) == "(No matching studio documents founds)"
+    assert format_context([]) == "(No matching studio documents found)"
 
 
 def test_format_context_labels_each_chunk_with_its_source():

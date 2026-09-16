@@ -71,13 +71,6 @@ def main() -> None:
     render_hero()
 
     init_session()
-    if (
-        st.session_state.messages
-        and st.session_state.messages[0]["role"] == "assistant"
-        and "Franz" not in st.session_state.messages[0]["content"]
-        and st.session_state.show_quick_replies
-    ):
-        st.session_state.messages[0]["content"] = GREETING
 
     try:
         _cached_vectorstore()

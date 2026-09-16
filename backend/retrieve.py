@@ -30,7 +30,7 @@ TEAM_QUERY = re.compile(
 
 
 @traceable(name="retrieve_chunks", run_type="retriever")
-def retrieve_chunks(vectorestore: Chroma, query: str, k:int = RETRIEVE_K) -> list[Document]:
+def retrieve_chunks(vectorstore: Chroma, query: str, k:int = RETRIEVE_K) -> list[Document]:
     """Find the chunks in the vector store most relevant to a user query.
 
     Runs a plain similarity search against the query. If the query looks
@@ -55,7 +55,7 @@ def retrieve_chunks(vectorestore: Chroma, query: str, k:int = RETRIEVE_K) -> lis
     docs: list[Document] = []
 
     for query in queries:
-        for doc in vectorestore.similarity_search(query, k=k):
+        for doc in vectorstore.similarity_search(query, k=k):
             # Using a slice of the content as the dedup key is enough here,
             # since two different chunks starting the same way would be
             # very unlikely given how the docs are split.
@@ -78,7 +78,7 @@ def format_context(docs: list[Document]) -> str:
     information is sourced from.
     """
     if not docs:
-        return "(No matching studio documents founds)"
+        return "(No matching studio documents found)"
 
     parts = []
     for i, doc in enumerate(docs, start=1):

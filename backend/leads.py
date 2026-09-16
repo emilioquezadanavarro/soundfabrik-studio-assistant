@@ -2,7 +2,7 @@
 Capture booking leads to Supabase.
 
 Deliberately minimal: If a message contains an email or a phone number, it
-stores the whole message verbatim alongside whatever contact fields it founds and a generic inquiry type
+stores the whole message verbatim alongside whatever contact fields it found and a generic inquiry type
 
 Structuring `message` further is left to a later step (an LLM classifier, an n8n workflow, or a human)
 """
