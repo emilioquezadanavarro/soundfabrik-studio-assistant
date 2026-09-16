@@ -57,10 +57,6 @@ def respond_to_user(user_text: str) -> None:
     st.session_state.messages.append(
         {"role": "assistant", "content": result.reply}
     )
-    if result.lead_saved:
-        lead = result.lead_saved
-        contact = lead.get("email") or lead.get("phone") or "contact on file"
-        st.session_state.lead_success = f"Lead saved: {contact}"
 
 
 def main() -> None:
@@ -88,10 +84,6 @@ def main() -> None:
     except Exception as exc:
         st.error(f"Failed to build knowledge base: {exc}")
         st.stop()
-
-    if st.session_state.get("lead_success"):
-        st.success(st.session_state.lead_success)
-        del st.session_state.lead_success
 
     assistant_avatar = str(LOGO_MARK) if LOGO_MARK.exists() else None
     for msg in st.session_state.messages:
