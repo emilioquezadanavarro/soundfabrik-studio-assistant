@@ -60,3 +60,23 @@ def anthropic_api_key() -> str:
             "Set it in .env or .streamlit/secrets.toml."
         )
     return key
+
+
+def supabase_url() -> str:
+    url = (os.getenv("SUPABASE_URL") or "").strip()
+    if not url:
+        raise RuntimeError(
+            "Missing SUPABASE_URL (used for lead storage). "
+            "Set it in .env or .streamlit/secrets.toml."
+        )
+    return url
+
+
+def supabase_service_role_key() -> str:
+    key = (os.getenv("SUPABASE_SERVICE_ROLE_KEY") or "").strip()
+    if not key:
+        raise RuntimeError(
+            "Missing SUPABASE_SERVICE_ROLE_KEY (used for lead storage). "
+            "Set it in .env or .streamlit/secrets.toml."
+        )
+    return key
