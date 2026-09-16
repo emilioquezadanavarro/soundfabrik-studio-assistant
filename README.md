@@ -4,7 +4,11 @@
 
 A RAG studio-assistant chatbot for a real Berlin recording studio: guard, retrieve, generate, plus automatic lead capture into Supabase.
 
+<img width="1131" height="900" alt="chat" src="https://github.com/user-attachments/assets/156b09e4-4d9d-4a01-b0c2-a0ad9bb0ab15" />
+
+
 **[Live demo →](https://recording-studio-assistant.streamlit.app/)**
+
 
 > **About this project.** An official project built for Soundfabrik Berlin (a Berlin recording studio) for potential future use, and published here for review as part of my portfolio. The public repository and live demo run on synthetic sample data (`sample-docs/`, a fictional studio called "Master Sound Berlin"). The Soundfabrik Berlin name, branding, logo, and real studio documentation remain the property of the studio and are not included in this repository. The code is source-available and **not licensed for reuse**, see [`NOTICE`](./NOTICE).
 
@@ -156,6 +160,8 @@ The one quality miss ("Can I bring my own DAW?") was flagged `grounded=False` by
 ## Tracing
 
 Every turn is traced end-to-end with LangSmith (`@traceable` on `handle_turn`, `retrieve_chunks`, the guard classifier, and `generate_reply`), across three separate projects (`-dev`, `-evals`, `-prod`) so local testing, eval runs, and the live deploy never mix traces.
+
+<img width="1674" height="924" alt="tracing" src="https://github.com/user-attachments/assets/75ec0948-8ca1-4d3c-880c-21cfab2bf6db" />
 
 ## Local setup
 
